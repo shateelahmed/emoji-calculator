@@ -26,7 +26,7 @@
     </head>
     <body class="antialiased">
         <div class="row is-full-height align-items-center justify-content-center">
-            <form method="GET" id="calculator_form" class="col-8">
+            <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="col-8">
                 <div class="row">
                     <div class="col-md">
                         <label for="operand_1">Operand 1</label>
