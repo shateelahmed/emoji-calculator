@@ -123,13 +123,20 @@
             }
 
             /**
-             * Submit a form with its data
+             * Handle ajax request error response
              */
-            const submitForm = () => {
+            const hideAlerts = () => {
                 $('.is-invalid').removeClass('is-invalid');
                 $('.invalid-feedback').empty();
                 unknown_error_alert.addClass('d-none');
                 unknown_error_alert.empty();
+            }
+
+            /**
+             * Submit a form with its data
+             */
+            const submitForm = () => {
+                hideAlerts();
 
                 $.ajax({
                     url: form.attr("action"),
