@@ -31,6 +31,9 @@
         <div class="row is-full-height align-items-center justify-content-center">
             <div class="box col-8">
                 <h1 class="text-center mb-5">Emoji &#x1F600; Calculator</h1>
+                <div id="unknown_error_alert" class="alert alert-danger mb-5 d-none" role="alert">
+                    A simple danger alert—check it out!
+                </div>
                 <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="row">
                     <div class="row">
                         <div class="col-md">
@@ -85,19 +88,25 @@
                     'X-CSRF-TOKEN': csrf_token
                 }
             });
+            const unknown_error_alert = $("#unknown_error_alert");
             const form = $("#calculator_form");
 
             /**
              * Handle ajax request error response
              */
             const handleErrorResponse = (error_response, show_error_message = true) => {
+                unknown_error_alert.addClass('d-none');
+                unknown_error_alert.empty();
+
                 let error_message = '';
                 if (error_response.status == 422) {
                     $.each(error_response.responseJSON.errors, (input_name, errors) => {
+                        error_message = '';
+
                         // Concat all error messages of a field into a single string
-                        $.each(errors, error) => {
-                            error_message += error + ' ';
-                        }
+                        $.each(errors, (error, message) => {
+                            error_message += message + ' ';
+                        });
                         $(`#${input_name}_invalid_feedback`).text(`${ error_message }`);
                         $(`#${input_name}`).addClass(`is-invalid`);
                     });
@@ -109,7 +118,8 @@
                     error_message = error_response.responseJSON.message;
                 }
 
-                console.log(error_message);
+                unknown_error_alert.text(error_message);
+                unknown_error_alert.removeClass('d-none');
             }
 
             /**
@@ -118,6 +128,9 @@
             const submitForm = () => {
                 $('.is-invalid').removeClass('is-invalid');
                 $('.invalid-feedback').empty();
+                unknown_error_alert.addClass('d-none');
+                unknown_error_alert.empty();
+
                 $.ajax({
                     url: form.attr("action"),
                     type: form.attr("method"),
