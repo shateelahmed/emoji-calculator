@@ -72,5 +72,64 @@
                 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                 crossorigin="anonymous">
         </script>
+        <script>
+            const csrf_token = $('meta[name="csrf-token"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrf_token
+                }
+            });
+            const form = $("#calculator_form");
+
+            /**
+             * Handle ajax request error response
+             */
+            const handleErrorResponse = (error_response, show_error_message = true) => {
+                if (error_response.status == 422) {
+                    $.each(error_response.responseJSON.errors, (input_name, error) => {
+                        $(`#${input_name}_invalid_feedback`).text(`${ error[0] }`);
+                        $(`#${input_name}`).addClass(`is-invalid`);
+                    });
+                    return;
+                }
+
+                let error_message = `Something went wrong`;
+                if (show_error_message && error_response.responseJSON.message) {
+                    error_message = error_response.responseJSON.message;
+                }
+
+                console.log(error_message);
+            }
+
+            /**
+             * Submit a form with its data
+             */
+            const submitForm = () => {
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').empty();
+                $.ajax({
+                    url: form.attr("action"),
+                    type: form.attr("method"),
+                    data: form.serialize(),
+                    beforeSend: () => {
+                        $("#result_spinner").removeClass("d-none");
+                    },
+                    complete: () => {
+                        $("#result_spinner").addClass("d-none");
+                    },
+                    success: (response) => {
+                        $("#result").val(response.result);
+                    },
+                    error: (error) => {
+                        handleErrorResponse(error);
+                    }
+                });
+            }
+
+            form.on('submit', (event) => {
+                event.preventDefault();
+                submitForm();
+            });
+        </script>
     </body>
 </html>
