@@ -22,46 +22,52 @@
             .is-full-height {
                 height: 100vh;
             }
+            .box {
+                padding: 10rem;
+            }
         </style>
     </head>
     <body class="antialiased">
         <div class="row is-full-height align-items-center justify-content-center">
-            <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="col-8">
-                <div class="row">
-                    <div class="col-md">
-                        <label for="operand_1">Operand 1</label>
-                        <input type="number" id="operand_1" name="operand_1" class="form-control">
-                        <div id="operand_1_invalid_feedback" class="invalid-feedback"></div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="floatingSelect">Operator</label>
-                        <select id="operator" class="form-select" name="operator">
-                            <option value="" class="text-center">Choose an operator</option>
-                            @foreach ($operator_emojis as $operator => $emoji)
-                                <option value="{{ $operator }}" class="text-center">{!! $emoji !!}</option>
-                            @endforeach
-                        </select>
-                        <div id="operator_invalid_feedback" class="invalid-feedback"></div>
-                    </div>
-                    <div class="col-md">
-                        <label for="operand_2">Operand 2</label>
-                        <input type="number" id="operand_2" name="operand_2" class="form-control">
-                        <div id="operand_2_invalid_feedback" class="invalid-feedback"></div>
-                    </div>
-                    <div class="col-md-1 mt-4">
-                        <button type="submit" class="btn btn-primary">=</button>
-                    </div>
-                    <div class="col-md-1 mt-4">
-                        <div id="result_spinner" class="spinner-border text-info d-none" role="status">
-                            <span class="visually-hidden">Loading...</span>
+            <div class="box col-8">
+                <h1 class="text-center mb-5">Emoji &#x1F600; Calculator</h1>
+                <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="row">
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="operand_1">Operand 1</label>
+                            <input type="number" id="operand_1" name="operand_1" class="form-control">
+                            <div id="operand_1_invalid_feedback" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="floatingSelect">Operator</label>
+                            <select id="operator" class="form-select" name="operator">
+                                <option value="" class="text-center">Choose an operator</option>
+                                @foreach ($operator_emojis as $operator => $emoji)
+                                    <option value="{{ $operator }}" class="text-center">{!! $emoji !!}</option>
+                                @endforeach
+                            </select>
+                            <div id="operator_invalid_feedback" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md">
+                            <label for="operand_2">Operand 2</label>
+                            <input type="number" id="operand_2" name="operand_2" class="form-control">
+                            <div id="operand_2_invalid_feedback" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-1 mt-4">
+                            <button type="submit" class="btn btn-primary">=</button>
+                        </div>
+                        <div class="col-md-1 mt-4">
+                            <div id="result_spinner" class="spinner-border text-info d-none" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <label for="result">Result</label>
+                            <input type="number" id="result" class="form-control">
                         </div>
                     </div>
-                    <div class="col-md">
-                        <label for="result">Result</label>
-                        <input type="number" id="result" class="form-control">
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
