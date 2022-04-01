@@ -39,6 +39,18 @@ class CalculatorController extends Controller
         ]);
     }
 
+    private static function isDivisionByZero(Request $request)
+    {
+        if (
+            $request->{self::REQ_PARAM_OPERATOR} == self::OPERATOR_DIVISION
+            && $request->{self::REQ_PARAM_OPERAND_2} == 0
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function calculate(Request $request)
     {
         try {
@@ -50,6 +62,11 @@ class CalculatorController extends Controller
                 ],
                 self::REQ_PARAM_OPERAND_2 => 'required|numeric',
             ]);
+            $validator->after(function ($validator) use ($request) {
+                if (self::isDivisionByZero($request)) {
+                    $validator->errors()->add(self::REQ_PARAM_OPERAND_2, 'Division by Zero is forbidden!');
+                }
+            });
 
             if ($validator->fails()) {
                 return response()->json([
