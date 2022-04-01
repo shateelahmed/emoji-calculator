@@ -29,7 +29,7 @@
     </head>
     <body class="antialiased">
         <div class="row is-full-height align-items-center justify-content-center">
-            <div class="box col-8">
+            <div class="box col-md-8">
                 <h1 class="text-center mb-5">Emoji &#x1F600; Calculator</h1>
                 <div id="unknown_error_alert" class="alert alert-danger mb-5 d-none" role="alert">
                     A simple danger alert—check it out!
@@ -44,7 +44,7 @@
                         <div class="col-md-3">
                             <label for="floatingSelect">Operator</label>
                             <select id="operator" class="form-select" name="operator">
-                                <option value="" class="text-center">Choose an operator</option>
+                                <option value="" class="text-center">Choose an emoji</option>
                                 @foreach ($operator_emojis as $operator => $emoji)
                                     <option value="{{ $operator }}" class="text-center">{!! $emoji !!}</option>
                                 @endforeach
