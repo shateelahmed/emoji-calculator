@@ -85,15 +85,20 @@
              * Handle ajax request error response
              */
             const handleErrorResponse = (error_response, show_error_message = true) => {
+                let error_message = '';
                 if (error_response.status == 422) {
-                    $.each(error_response.responseJSON.errors, (input_name, error) => {
-                        $(`#${input_name}_invalid_feedback`).text(`${ error[0] }`);
+                    $.each(error_response.responseJSON.errors, (input_name, errors) => {
+                        // Concat all error messages of a field into a single string
+                        $.each(errors, error) => {
+                            error_message += error + ' ';
+                        }
+                        $(`#${input_name}_invalid_feedback`).text(`${ error_message }`);
                         $(`#${input_name}`).addClass(`is-invalid`);
                     });
                     return;
                 }
 
-                let error_message = `Something went wrong`;
+                error_message = `Something went wrong`;
                 if (show_error_message && error_response.responseJSON.message) {
                     error_message = error_response.responseJSON.message;
                 }
