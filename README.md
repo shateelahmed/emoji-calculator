@@ -4,17 +4,44 @@ This is an arithmetic calculator based on emojis.
 
 ## Installation
 
-`docker-compose` is required to install and run this project. To install `docker-compose`, please visit [this](https://docs.docker.com/compose/install/) link and follow the instructions.
+`Docker` and `Docker Compose` are required to install and run this project.
 
-Clone or download and unzip the application, open a terminal in the root directory and run
+To install `Docker`, please visit [this](https://docs.docker.com/get-docker/) link and follow the instructions.
+
+To install `Docker Compose`, please visit [this](https://docs.docker.com/compose/install/) link and follow the instructions.
+
+After cloning the application, open a terminal in the `emoji-calculator` directory and run
+
 ```
-./vedor/bin/sail up
+$ docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+
+$ cp .env.example .env
+
+$ APP_PORT=3000 ./vedor/bin/sail up -d
+
+$ ./vedor/bin/sail artisan key:generate
 ```
-This will download all the dependencies, install them and run the application on port 3000 of your local machine.
 
-To run the application on a different port, open the `.env` file in the root directory and set the desired port in the `APP_PORT` variable.
+This will download all the dependencies, install them, set the application key and run the application on port 3000 of your local machine.
 
-To stop the application, press  <kbd>ctrl</kbd>+<kbd>c</kbd> or <kbd>command</kbd>+<kbd>c</kbd> inside the terminal where the application is running.
+You can visit [http://localhost:3000](https://docs.docker.com/compose/install/) to view the website.
+
+To stop the application, run
+
+```
+$ ./vedor/bin/sail down
+```
+
+To run the application on your desired port number, run
+
+```
+$ APP_PORT=<port_number> ./vedor/bin/sail up -d
+```
 
 ## Approach
 
