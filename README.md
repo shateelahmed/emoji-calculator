@@ -22,25 +22,25 @@ $ docker run --rm \
 
 $ cp .env.example .env
 
-$ APP_PORT=3000 ./vedor/bin/sail up -d
+$ APP_PORT=3000 ./vendor/bin/sail up -d
 
 $ ./vendor/bin/sail artisan key:generate
 ```
 
-This will download all the dependencies, install them, set the application key and run the application on port 3000 of your local machine.
+This will download and install all the dependencies, set the application key and run the application on port 3000 of your local machine.
 
 You can visit [http://localhost:3000](https://docs.docker.com/compose/install/) to view the website.
 
 To stop the application, run
 
 ```
-$ ./vedor/bin/sail down
+$ ./vendor/bin/sail down
 ```
 
 To run the application on your desired port number, run
 
 ```
-$ APP_PORT=<port_number> ./vedor/bin/sail up -d
+$ APP_PORT=<port_number> ./vendor/bin/sail up -d
 ```
 
 ## Approach
