@@ -34,40 +34,37 @@
                 <div id="unknown_error_alert" class="alert alert-danger mb-5 d-none" role="alert">
                     A simple danger alert—check it out!
                 </div>
-                <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="row">
-                    <div class="row">
-                        <div class="col-md">
-                            <label for="operand_1">Operand 1</label>
-                            <input type="number" id="operand_1" name="operand_1" class="form-control">
-                            <div id="operand_1_invalid_feedback" class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="floatingSelect">Operator</label>
-                            <select id="operator" class="form-select" name="operator">
-                                <option value="" class="text-center">Choose an emoji</option>
-                                @foreach ($operator_emojis as $operator => $emoji)
-                                    <option value="{{ $operator }}" class="text-center">{!! $emoji !!}</option>
-                                @endforeach
-                            </select>
-                            <div id="operator_invalid_feedback" class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md">
-                            <label for="operand_2">Operand 2</label>
-                            <input type="number" id="operand_2" name="operand_2" class="form-control">
-                            <div id="operand_2_invalid_feedback" class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md-1 mt-4">
-                            <button type="submit" class="btn btn-primary">=</button>
-                        </div>
-                        <div class="col-md-1 mt-4">
-                            <div id="result_spinner" class="spinner-border text-info d-none" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <div class="col-md">
-                            <label for="result">Result</label>
-                            <input type="number" id="result" class="form-control">
-                        </div>
+                <form action="{{ route('calculate') }}" method="GET" id="calculator_form" class="row justify-content-evenly">
+                    <div class="col-md">
+                        <label for="operand_1">Operand 1</label>
+                        <input type="number" id="operand_1" name="operand_1" class="form-control">
+                        <div id="operand_1_invalid_feedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="floatingSelect">Operator</label>
+                        <select id="operator" class="form-select" name="operator">
+                            <option value="" class="text-center">Choose an emoji</option>
+                            @foreach ($operator_emojis as $operator => $emoji)
+                                <option value="{{ $operator }}" class="text-center">{!! $emoji !!}</option>
+                            @endforeach
+                        </select>
+                        <div id="operator_invalid_feedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md">
+                        <label for="operand_2">Operand 2</label>
+                        <input type="number" id="operand_2" name="operand_2" class="form-control">
+                        <div id="operand_2_invalid_feedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-1 mt-4 text-center">
+                        <button type="submit" id="submit_button" class="btn btn-outline-primary">=</button>
+                        <button id="spinner_button" class="btn btn-outline-primary d-none" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span class="visually-hidden">Loading...</span>
+                        </button>
+                    </div>
+                    <div class="col-md">
+                        <label for="result">Result</label>
+                        <input type="number" id="result" class="form-control">
                     </div>
                 </form>
             </div>
@@ -95,9 +92,6 @@
              * Handle ajax request error response
              */
             const handleErrorResponse = (error_response, show_error_message = true) => {
-                unknown_error_alert.addClass('d-none');
-                unknown_error_alert.empty();
-
                 let error_message = '';
                 if (error_response.status == 422) {
                     $.each(error_response.responseJSON.errors, (input_name, errors) => {
@@ -132,6 +126,16 @@
                 unknown_error_alert.empty();
             }
 
+            const showSpinner = () => {
+                $("#spinner_button").removeClass("d-none");
+                $("#submit_button").addClass("d-none");
+            }
+
+            const hideSpinner = () => {
+                $("#spinner_button").addClass("d-none");
+                $("#submit_button").removeClass("d-none");
+            }
+
             /**
              * Submit a form with its data
              */
@@ -143,10 +147,10 @@
                     type: form.attr("method"),
                     data: form.serialize(),
                     beforeSend: () => {
-                        $("#result_spinner").removeClass("d-none");
+                        showSpinner();
                     },
                     complete: () => {
-                        $("#result_spinner").addClass("d-none");
+                        hideSpinner();
                     },
                     success: (response) => {
                         $("#result").val(response.result);
