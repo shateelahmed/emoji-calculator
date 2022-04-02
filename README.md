@@ -29,7 +29,7 @@ $ ./vendor/bin/sail artisan key:generate
 
 This will download and install all the dependencies, set the application key and run the application on port 3000 of your local machine.
 
-You can visit [http://localhost:3000](https://docs.docker.com/compose/install/) to view the website.
+You can visit [http://localhost:3000](http://localhost:3000) to view the website.
 
 To stop the application, run
 
