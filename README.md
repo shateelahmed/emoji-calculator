@@ -24,7 +24,7 @@ $ cp .env.example .env
 
 $ APP_PORT=3000 ./vedor/bin/sail up -d
 
-$ ./vedor/bin/sail artisan key:generate
+$ ./vendor/bin/sail artisan key:generate
 ```
 
 This will download all the dependencies, install them, set the application key and run the application on port 3000 of your local machine.
