@@ -39,7 +39,13 @@ class CalculatorController extends Controller
         ]);
     }
 
-    private static function isDivisionByZero(Request $request)
+    /**
+     * Check if division is made by zero
+     *
+     * @param Request $request
+     * @return boolean
+     */
+    private static function isDivisionByZero(Request $request): bool
     {
         if (
             $request->{self::REQ_PARAM_OPERATOR} == self::OPERATOR_DIVISION
@@ -63,6 +69,7 @@ class CalculatorController extends Controller
                 self::REQ_PARAM_OPERAND_2 => 'required|numeric',
             ]);
             $validator->after(function ($validator) use ($request) {
+                // Validate division by zero
                 if (self::isDivisionByZero($request)) {
                     $validator->errors()->add(self::REQ_PARAM_OPERAND_2, 'Division by Zero is forbidden!');
                 }
@@ -74,6 +81,7 @@ class CalculatorController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
+            // Choose operator and perform calculation
             switch ($request->{self::REQ_PARAM_OPERATOR}) {
                 case self::OPERATOR_ADDITION:
                     $result = $request->{self::REQ_PARAM_OPERAND_1} + $request->{self::REQ_PARAM_OPERAND_2};
@@ -95,9 +103,10 @@ class CalculatorController extends Controller
                 'result' => $result,
             ], Response::HTTP_OK);
         } catch (Exception $e) {
+            // Log the error
             Log::error($e->getMessage(), ['request' => $request->all()]);
             return response()->json([
-                'message' => 'something went wrong',
+                'message' => 'Something went wrong',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
