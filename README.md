@@ -14,7 +14,7 @@ This will download all the dependencies, install them and run the application on
 
 To run the application on a different port, open the `.env` file in the root directory and set the desired port in the `APP_PORT` variable.
 
-To stop the application, press  <kbd>ctrl+c</kbd> or <kbd>⌘ Command+c</kbd> inside the terminal where the application is running.
+To stop the application, press  <kbd>ctrl</kbd>+<kbd>c</kbd> or <kbd>Command</kbd>+<kbd>c</kbd> inside the terminal where the application is running.
 
 ## Approach
 
@@ -26,6 +26,6 @@ Controller: `app/Http/Controllers/CalculatorController.php`
 
 View: `resources/views/home.blade.php`
 
-A user can view the website and interact with it as described in the accesptance criteria.
+A user can view the website and interact with it as described in the acceptance criteria.
 
-When a user submits the form, an ajax request will be made with the form data to the `calculate` route'. The route will send the request to the `calculate` method of the `CalculatorController`. This method validates the request and performs the necessary calculations based on the given parameters and returns the result via JSON. The result is then extracted from the JSON and shown in the 'Result' field in the homepage.
+When a user submits the form, an ajax request will be made with the form data to the `calculate` route. The route will send the request to the `calculate` method of the `CalculatorController`. This method validates the request and performs the necessary calculations based on the given parameters and returns the result via JSON. The result is then extracted from the JSON and shown in the 'Result' field in the homepage.
